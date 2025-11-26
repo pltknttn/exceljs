@@ -1,0 +1,75 @@
+name: Publish
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        type: string
+        required: true
+        description: Publishing version (tag name)
+      dry-run:
+        type: boolean
+        required: false
+        default: false
+        description: Dry run
+
+permissions:
+  id-token: write  # Required for OIDC (Trusted Publishing)
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: npmjs
+    steps:
+      - name: Checkout devextreme-exceljs-fork repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.version }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: 'npm'
+          registry-url: 'https://registry.npmjs.org'
+
+      # npm version 11.5.1 or later is required to use Trusted Publishing
+      - name: NPM Version
+        run: npm --version
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Clean previous build
+        run: npm run clean
+
+      - name: Build package
+        run: npm run build
+
+      - name: Verify build artifacts
+        run: |
+          echo "Verifying build artifacts..."
+          if [ ! -d "dist" ]; then
+            echo "Error: dist directory not found"
+            exit 1
+          fi
+          if [ ! -f "dist/dx-exceljs-fork.min.js" ]; then
+            echo "Error: minified bundle not found"
+            exit 1
+          fi
+          if [ ! -f "dist/dx-exceljs-fork.js" ]; then
+            echo "Error: main bundle not found"
+            exit 1
+          fi
+          echo "All build artifacts verified successfully"
+
+      - name: Publish to NPM
+        env:
+          DRY_RUN: "${{ inputs.dry-run }}"
+        run: |
+          if [ "$DRY_RUN" = true ]; then
+            npm publish --dry-run
+          else
+            npm publish
+          fi

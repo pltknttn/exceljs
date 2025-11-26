@@ -1,55 +1,10 @@
-# ExcelJS (Protobi Fork)
-
-> ⚠️ **Temporary Fork** - This is a bridge fork with features pending upstream merge.
-> We recommend using [official exceljs](https://github.com/exceljs/exceljs) if you don't need these specific features.
+# DevExtreme ExcelJS
 
 [![Build Status](https://github.com/exceljs/exceljs/actions/workflows/tests.yml/badge.svg?branch=master&event=push)](https://github.com/exceljs/exceljs/actions/workflows/tests.yml)
-[![npm version](https://badge.fury.io/js/%40protobi%2Fexceljs.svg)](https://www.npmjs.com/package/@protobi/exceljs)
 
 Read, manipulate and write spreadsheet data and styles to XLSX and JSON.
 
 Reverse engineered from Excel spreadsheet files as a project.
-
-## Why Use This Fork?
-
-If you need **today**:
-- ✅ Multiple pivot tables from same source data
-- ✅ Pivot table count metric (`metric: 'count'`)
-- ✅ Critical bug fixes (XML parsing, date handling, streaming)
-
-All features are submitted to upstream. [See merge status →](FORK.md)
-
-## Analysis of open pull requests
-
-Below is a systematic review of open pull requests on the master repo.
-Each are classified by complexity, completeness, salience, and type, and prioritized.
-https://github.com/protobi/exceljs/wiki/Analysis-of-open-pull-requests-in-ExcelJS
-
-## Installation
-
-```bash
-npm install @protobi/exceljs
-```
-
-## Migration Path
-
-Once upstream merges our changes (tracking 6 PRs), switch back:
-
-```bash
-npm install exceljs  # Official package
-```
-
-No code changes needed - we're API-compatible!
-
-## Fork Status
-
-See [FORK.md](FORK.md) for detailed tracking of upstream PRs.
-
-## Commercial Support
-
-Commercial support, consulting, and priority bug fixes are available for organizations using ExcelJS in production. Contact: [pieter@protobi.com](mailto:pieter@protobi.com)
-
----
 
 # Translations
 
@@ -58,12 +13,11 @@ Commercial support, consulting, and priority bug fixes are available for organiz
 # Installation
 
 ```shell
-npm install exceljs
+npm install devextreme-exceljs-fork
 ```
 
 # New Features!
 
-* **Multiple Pivot Tables Support** - The library now supports adding multiple pivot tables per workbook. Previously limited to one pivot table per file, you can now create as many pivot tables as needed across different worksheets. See [Pivot Tables](#pivot-tables) for details.
 * Merged [Add pivot table with limitations #2551](https://github.com/exceljs/exceljs/pull/2551). <br/> Many thanks to Protobi and <a href="https://github.com/mikez">Michael</a> for this contribution!
 * Merged [fix: styles rendering in case when "numFmt" is present in conditional formatting rules (resolves #1814) #1815](https://github.com/exceljs/exceljs/pull/1815). <br/> Many thanks to [@andreykrupskii](https://github.com/andreykrupskii) for this contribution!
 * Merged [inlineStr cell type support #1575 #1576](https://github.com/exceljs/exceljs/pull/1576). <br/> Many thanks to [@drdmitry](https://github.com/drdmitry) for this contribution!
@@ -156,7 +110,6 @@ To be clear, all contributions added to this library will be included in the lib
       <li><a href="#data-validations">Data Validations</a></li>
       <li><a href="#cell-comments">Cell Comments</a></li>
       <li><a href="#tables">Tables</a></li>
-      <li><a href="#pivot-tables">Pivot Tables</a></li>
       <li><a href="#styles">Styles</a>
         <ul>
           <li><a href="#number-formats">Number Formats</a></li>
@@ -345,8 +298,8 @@ Use the second parameter of the addWorksheet function to specify options for the
 For Example:
 
 ```javascript
-// create a sheet with a red tab colour using the hexadecimal alpha-red-green-blue format
-const sheet = workbook.addWorksheet('My Sheet', {properties:{tabColor:{argb:'FFCC0000'}}});
+// create a sheet with red tab colour
+const sheet = workbook.addWorksheet('My Sheet', {properties:{tabColor:{argb:'FFC0000'}}});
 
 // create a sheet where the grid lines are hidden
 const sheet = workbook.addWorksheet('My Sheet', {views: [{showGridLines: false}]});
@@ -1189,10 +1142,6 @@ ws.getCell('B1').note = {
     insetmode: 'custom',
     inset: [0.25, 0.25, 0.35, 0.35]
   },
-  size: {
-      rows: 10,
-      cols:  4
-  },
   protection: {
     locked: True,
     lockText: False
@@ -1205,13 +1154,13 @@ ws.getCell('B1').note = {
 
 The following table defines the properties supported by cell comments.
 
-| Field     | Required | Default Value       | Description                                                                                             |
-| --------  | -------- |---------------------|---------------------------------------------------------------------------------------------------------|
-| texts     | Y        |                     | The text of the comment                                                                                 |
-| margins | N        | {}                  | Determines the value of margins for automatic or custom cell comments                                   
-| protection   | N        | {}                  | Specifying the lock status of objects and object text using protection attributes                       |
-| editAs   | N        | 'absolute'          | Use the 'editAs' attribute to specify how the annotation is anchored to the cell                        |
-| size      |  N      | {rows:  4, col*: 2} | Set size of note box in rows / columns. Rows defaults to length of `texts` if an array or 4 if a string |
+| Field     | Required | Default Value | Description |
+| --------  | -------- | ------------- | ----------- |
+| texts     | Y        |               | The text of the comment |
+| margins | N        | {}  | Determines the value of margins for automatic or custom cell comments
+| protection   | N        | {} | Specifying the lock status of objects and object text using protection attributes |
+| editAs   | N        | 'absolute' | Use the 'editAs' attribute to specify how the annotation is anchored to the cell  |
+
 ### Cell Comments Margins
 
 Determine the page margin setting mode of the cell annotation, automatic or custom mode.
@@ -1471,170 +1420,6 @@ column.totalsRowResult = 10;
 
 // commit the table changes into the sheet
 table.commit();
-```
-
-
-## Pivot Tables[⬆](#contents)<!-- Link generated with jump2header -->
-
-Pivot tables provide powerful data analysis capabilities by summarizing and reorganizing data from a source worksheet.
-
-**⚠️ Note:** Pivot Table support is experimental. Please leave feedback at https://github.com/exceljs/exceljs/discussions/2575
-
-### Creating a Pivot Table
-
-To add a pivot table to a worksheet, call `addPivotTable` with a configuration object:
-
-```javascript
-const ExcelJS = require('exceljs');
-const workbook = new ExcelJS.Workbook();
-
-// Create source data worksheet
-const sourceSheet = workbook.addWorksheet('Data');
-sourceSheet.addRows([
-  ['Region', 'Product', 'Category', 'Quarter', 'Amount'],
-  ['North', 'Widget A', 'Electronics', 'Q1', 1000],
-  ['South', 'Widget B', 'Electronics', 'Q1', 1500],
-  ['North', 'Widget A', 'Electronics', 'Q2', 1200],
-  ['South', 'Widget B', 'Home', 'Q2', 1800],
-  ['East', 'Widget C', 'Home', 'Q1', 2000],
-  ['West', 'Widget C', 'Home', 'Q2', 2200],
-]);
-
-// Create pivot table on a new worksheet
-const pivotSheet = workbook.addWorksheet('Pivot');
-pivotSheet.addPivotTable({
-  sourceSheet: sourceSheet,
-  rows: ['Region', 'Product'],
-  columns: ['Quarter'],
-  values: ['Amount'],
-  metric: 'sum',
-});
-
-await workbook.xlsx.writeFile('pivot-example.xlsx');
-```
-
-### Multiple Pivot Tables
-
-As of this version, **multiple pivot tables per workbook are supported**. You can add pivot tables to different worksheets:
-
-```javascript
-// First pivot table
-const pivotSheet1 = workbook.addWorksheet('Sales by Region');
-pivotSheet1.addPivotTable({
-  sourceSheet: dataSheet,
-  rows: ['Region'],
-  columns: ['Quarter'],
-  values: ['Amount'],
-  metric: 'sum',
-});
-
-// Second pivot table with different configuration
-const pivotSheet2 = workbook.addWorksheet('Sales by Product');
-pivotSheet2.addPivotTable({
-  sourceSheet: dataSheet,
-  rows: ['Product', 'Category'],
-  columns: ['Quarter'],
-  values: ['Amount'],
-  metric: 'sum',
-});
-```
-
-### Preserving Custom Column Widths
-
-By default, Excel's pivot table styles control column widths, which can override any custom widths you set on the worksheet. To preserve your custom column widths:
-
-```javascript
-const dataSheet = workbook.addWorksheet('Data');
-// ... add your data ...
-
-const pivotSheet = workbook.addWorksheet('Report');
-
-// Set custom column widths
-pivotSheet.getColumn(1).width = 30;  // Wide column for labels
-pivotSheet.getColumn(2).width = 15;  // Narrower for data
-
-// Create pivot table that preserves these widths
-pivotSheet.addPivotTable({
-  sourceSheet: dataSheet,
-  rows: ['Region', 'Product'],
-  columns: ['Quarter'],
-  values: ['Amount'],
-  metric: 'sum',
-  applyWidthHeightFormats: '0',  // Preserve worksheet column widths
-});
-```
-
-**When to use `applyWidthHeightFormats: '0'`:**
-- You need specific column widths for labels or data
-- You're generating reports with consistent formatting requirements
-- You want text wrapping to work with your custom widths
-
-**Default behavior (`applyWidthHeightFormats: '1'`):**
-- Excel applies the pivot table style's auto-sizing
-- Column widths adjust based on content
-- Standard Excel pivot table behavior
-
-### Pivot Table Properties
-
-The following properties are supported in the pivot table configuration:
-
-| Property                  | Type       | Required | Description                                                                 |
-| ------------------------- | ---------- | -------- | --------------------------------------------------------------------------- |
-| sourceSheet               | Worksheet  | Y        | The worksheet containing the source data. The entire sheet range is used.   |
-| rows                      | String[]   | Y        | Array of field names to use as row dimensions (must exist in first row)    |
-| columns                   | String[]   | Y        | Array of field names to use as column dimensions (must exist in first row) |
-| values                    | String[]   | Y        | Array of field names to aggregate (currently only 1 value is supported)    |
-| metric                    | String     | N        | Aggregation function (currently only 'sum' is supported). Default: 'sum'   |
-| applyWidthHeightFormats   | String     | N        | Controls column width behavior: '1' = apply pivot table style (default), '0' = preserve worksheet column widths |
-
-### Important Notes
-
-**Field Names:**
-- Field names must match column headers in the first row of the source sheet exactly
-- Field names are case-sensitive
-
-**Source Data:**
-- The pivot table uses the entire source worksheet data
-- The first row is treated as headers
-- All data rows below the header row will be included in the pivot table
-
-**Current Limitations:**
-- **Streaming not supported:** Pivot tables are **not supported with the streaming API** (`WorkbookWriter`). Pivot tables require reading all source data to generate the pivot cache, which conflicts with streaming's one-pass write model. Excel requires complete pivot cache data (all unique values and all data rows) at file creation time. Use the standard (non-streaming) `Workbook` API for workbooks with pivot tables.
-- **Write-only:** Pivot tables can be created and written to XLSX files, but **reading pivot table definitions from existing files is not yet implemented**. When you read an Excel file containing pivot tables:
-  - The pivot table data will be preserved if you write the file back out
-  - However, `workbook.pivotTables` will be empty - you cannot programmatically access or modify existing pivot tables
-  - The generated Excel files work perfectly when opened in Excel with full pivot table functionality
-- **Single value field:** Only one value field is supported per pivot table (`values` array must contain exactly 1 item)
-- **Single metric:** Only the `sum` aggregation metric is currently supported (no count, average, min, max, etc.)
-- **Source data requirements:**
-  - Source data must have headers in the first row
-  - All column headers must be unique
-  - The entire source sheet range is used (you cannot specify a partial range)
-- **Placement:** The pivot table will be placed starting at cell A1 on the destination worksheet
-- **No calculated fields:** Custom calculations, calculated fields, or computed columns are not supported
-- **No formatting options:** Pivot table styling and formatting options (besides the default) are not configurable
-- **No filters:** You cannot programmatically set filters on the pivot table (though they work interactively in Excel)
-
-### Example Output
-
-When you open the generated Excel file, the pivot table will be interactive and fully functional in Excel, allowing you to:
-- Expand/collapse row and column groups
-- Filter data using the pivot table controls
-- Refresh the pivot table if source data changes
-
-### Accessing Pivot Tables
-
-Pivot tables are stored in the workbook and worksheet models:
-
-```javascript
-// Access all pivot tables in the workbook
-console.log('Total pivot tables:', workbook.pivotTables.length);
-
-// Access pivot tables in a specific worksheet
-const pivotTables = worksheet.pivotTables;
-pivotTables.forEach(pt => {
-  console.log('Pivot table with cache ID:', pt.cacheId);
-});
 ```
 
 
@@ -2015,50 +1800,43 @@ worksheet.addConditionalFormatting({
 
 ### Expression[⬆](#contents)<!-- Link generated with jump2header -->
 
-| Field      | Optional | Default | Description |
-| ---------- | -------- | ------- | ----------- |
-| type       |          |         | 'expression' |
-| priority   | Y        | &lt;auto&gt;  | determines priority ordering of styles |
-| stopIfTrue | Y        | false   | if true, no rules with lower priority are applied if this rule is true |
-| formulae   |          |         | array of 1 formula string that returns a true/false value. To reference the cell value, use the top-left cell address |
-| style      |          |         | style structure to apply if the formula returns true |
+| Field    | Optional | Default | Description |
+| -------- | -------- | ------- | ----------- |
+| type     |          |         | 'expression' |
+| priority | Y        | &lt;auto&gt;  | determines priority ordering of styles |
+| formulae |          |         | array of 1 formula string that returns a true/false value. To reference the cell value, use the top-left cell address |
+| style    |          |         | style structure to apply if the formula returns true |
 
 ### Cell Is[⬆](#contents)<!-- Link generated with jump2header -->
 
-| Field      | Optional | Default | Description |
-| ---------- | -------- | ------- | ----------- |
-| type       |          |         | 'cellIs' |
-| priority   | Y        | &lt;auto&gt;  | determines priority ordering of styles |
-| stopIfTrue | Y        | false   | if true, no rules with lower priority are applied if this rule is true |
-| operator   |          |         | how to compare cell value with formula result |
-| formulae   |          |         | array of 1 formula string that returns the value to compare against each cell |
-| style      |          |         | style structure to apply if the comparison returns true |
+| Field    | Optional | Default | Description |
+| -------- | -------- | ------- | ----------- |
+| type     |          |         | 'cellIs' |
+| priority | Y        | &lt;auto&gt;  | determines priority ordering of styles |
+| operator |          |         | how to compare cell value with formula result |
+| formulae |          |         | array of 1 formula string that returns the value to compare against each cell |
+| style    |          |         | style structure to apply if the comparison returns true |
 
 **Cell Is Operators**
 
-| Operator             | Description |
-| -------------------- | ----------- |
-| equal                | Apply format if cell value equals formula value |
-| notEqual             | Apply format if cell value does not equal formula value |
-| greaterThan          | Apply format if cell value is greater than formula value |
-| greaterThanOrEqual   | Apply format if cell value is greater than or equal to formula value |
-| lessThan             | Apply format if cell value is less than formula value |
-| lessThanOrEqual      | Apply format if cell value is less than or equal to formula value |
-| between              | Apply format if cell value is between two formula values (inclusive) |
-| notBetween           | Apply format if cell value is not between two formula values |
+| Operator    | Description |
+| ----------- | ----------- |
+| equal       | Apply format if cell value equals formula value |
+| greaterThan | Apply format if cell value is greater than formula value |
+| lessThan    | Apply format if cell value is less than formula value |
+| between     | Apply format if cell value is between two formula values (inclusive) |
 
 
 ### Top 10[⬆](#contents)<!-- Link generated with jump2header -->
 
-| Field      | Optional | Default | Description |
-| ---------- | -------- | ------- | ----------- |
-| type       |          |         | 'top10' |
-| priority   | Y        | &lt;auto&gt;  | determines priority ordering of styles |
-| stopIfTrue | Y        | false   | if true, no rules with lower priority are applied if this rule is true |
-| rank       | Y        | 10      | specifies how many top (or bottom) values are included in the formatting |
-| percent    | Y        | false   | if true, the rank field is a percentage, not an absolute |
-| bottom     | Y        | false   | if true, the bottom values are included instead of the top |
-| style      |          |         | style structure to apply if the comparison returns true |
+| Field    | Optional | Default | Description |
+| -------- | -------- | ------- | ----------- |
+| type     |          |         | 'top10' |
+| priority | Y        | &lt;auto&gt;  | determines priority ordering of styles |
+| rank     | Y        | 10      | specifies how many top (or bottom) values are included in the formatting |
+| percent  | Y        | false   | if true, the rank field is a percentage, not an absolute |
+| bottom   | Y        | false   | if true, the bottom values are included instead of the top |
+| style    |          |         | style structure to apply if the comparison returns true |
 
 ### Above Average[⬆](#contents)<!-- Link generated with jump2header -->
 
@@ -2066,7 +1844,6 @@ worksheet.addConditionalFormatting({
 | ------------- | -------- | ------- | ----------- |
 | type          |          |         | 'aboveAverage' |
 | priority      | Y        | &lt;auto&gt;  | determines priority ordering of styles |
-| stopIfTrue    | Y        | false   | if true, no rules with lower priority are applied if this rule is true |
 | aboveAverage  | Y        | false   | if true, the rank field is a percentage, not an absolute |
 | style         |          |         | style structure to apply if the comparison returns true |
 
@@ -2113,14 +1890,13 @@ worksheet.addConditionalFormatting({
 
 ### Contains Text[⬆](#contents)<!-- Link generated with jump2header -->
 
-| Field      | Optional | Default | Description |
-| ---------- | -------- | ------- | ----------- |
-| type       |          |         | 'containsText' |
-| priority   | Y        | &lt;auto&gt;  | determines priority ordering of styles |
-| stopIfTrue | Y        | false   | if true, no rules with lower priority are applied if this rule is true |
-| operator   |          |         | type of text comparison |
-| text       |          |         | text to search for |
-| style      |          |         | style structure to apply if the comparison returns true |
+| Field    | Optional | Default | Description |
+| -------- | -------- | ------- | ----------- |
+| type     |          |         | 'containsText' |
+| priority | Y        | &lt;auto&gt;  | determines priority ordering of styles |
+| operator |          |         | type of text comparison |
+| text     |          |         | text to search for |
+| style    |          |         | style structure to apply if the comparison returns true |
 
 **Contains Text Operators**
 
@@ -2138,7 +1914,6 @@ worksheet.addConditionalFormatting({
 | ---------- | -------- | ------- | ----------- |
 | type       |          |         | 'timePeriod' |
 | priority   | Y        | &lt;auto&gt;  | determines priority ordering of styles |
-| stopIfTrue | Y        | false   | if true, no rules with lower priority are applied if this rule is true |
 | timePeriod |          |         | what time period to compare cell value to |
 | style      |          |         | style structure to apply if the comparison returns true |
 
@@ -2267,24 +2042,24 @@ Fractions of cells can be specified by using floating point numbers, e.g. the mi
 ```javascript
 // insert an image over part of B2:D6
 worksheet.addImage(imageId2, {
-  tl: new Anchor(worksheet, { col: 1.5, row: 1.5 }),
-  br: new Anchor(worksheet, { col: 3.5, row: 5.5 }),
+  tl: { col: 1.5, row: 1.5 },
+  br: { col: 3.5, row: 5.5 }
 });
 ```
 
 The cell range can also have the property 'editAs' which will control how the image is anchored to the cell(s)
 It can have one of the following values:
 
-| Value    | Description |
-| -------- | ----------- |
-| twoCell  | It specifies the image will be moved and sized with cells |
-| oneCell  | This is the default. Image will be moved with cells but not sized |
-| absolute | Image will not be moved or sized with cells |
+| Value     | Description |
+| --------- | ----------- |
+| undefined | It specifies the image will be moved and sized with cells |
+| oneCell   | This is the default. Image will be moved with cells but not sized |
+| absolute  | Image will not be moved or sized with cells |
 
 ```javascript
 ws.addImage(imageId, {
-  tl: new Anchor(worksheet, { col: 0.1125, row: 0.4 }),
-  br: new Anchor(worksheet, { col: 2.101046875, row: 3.4 }),
+  tl: { col: 0.1125, row: 0.4 },
+  br: { col: 2.101046875, row: 3.4 },
   editAs: 'oneCell'
 });
 ```
@@ -2405,7 +2180,7 @@ await workbook.xlsx.load(data, {
 
 ```javascript
 // write to a file
-const workbook = new Excel.Workbook();
+const workbook = createAndFillWorkbook();
 await workbook.xlsx.writeFile(filename);
 
 // write to a stream
@@ -2510,7 +2285,7 @@ Options supported when writing to a CSV file.
 ```javascript
 
 // write to a file
-const workbook = new Excel.Workbook();
+const workbook = createAndFillWorkbook();
 await workbook.csv.writeFile(filename);
 
 // write to a stream
