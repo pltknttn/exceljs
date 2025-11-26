@@ -1,4 +1,4 @@
-const Excel = require('../lib/dx-exceljs-fork.nodejs.js');
+const Excel = require('../lib/exceljs.nodejs.js');
 const HrStopwatch = require('./utils/hr-stopwatch');
 
 const [, , filename, password] = process.argv;
@@ -30,3 +30,4 @@ async function save() {
 save().catch(error => {
   console.log(error.message);
 });
+

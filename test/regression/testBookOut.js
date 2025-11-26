@@ -1,6 +1,6 @@
 /* eslint-disable node/no-unpublished-require */
 const _ = require('../../lib/utils/under-dash');
-const ExcelJS = require('../../lib/dx-exceljs-fork.nodejs');
+const ExcelJS = require('../../lib/exceljs.nodejs');
 
 const {Workbook} = ExcelJS;
 const HrStopwatch = require('./utils/hr-stopwatch');
@@ -305,3 +305,5 @@ wb.xlsx.writeFile(filename).then(() => {
 // .catch(function(error) {
 //    console.log(error.message);
 // })
+
+

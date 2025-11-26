@@ -1,5 +1,5 @@
 const path = require('path');
-const Excel = require('../lib/dx-exceljs-fork.nodejs.js');
+const Excel = require('../lib/exceljs.nodejs.js');
 const HrStopwatch = require('./utils/hr-stopwatch');
 
 const [, , filename] = process.argv;
@@ -26,3 +26,4 @@ wb.commit()
   .catch(error => {
     console.log(error.message);
   });
+

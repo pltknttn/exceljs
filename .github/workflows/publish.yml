@@ -54,11 +54,11 @@ jobs:
             echo "Error: dist directory not found"
             exit 1
           fi
-          if [ ! -f "dist/dx-exceljs-fork.min.js" ]; then
+          if [ ! -f "dist/exceljs.min.js" ]; then
             echo "Error: minified bundle not found"
             exit 1
           fi
-          if [ ! -f "dist/dx-exceljs-fork.js" ]; then
+          if [ ! -f "dist/exceljs.js" ]; then
             echo "Error: main bundle not found"
             exit 1
           fi

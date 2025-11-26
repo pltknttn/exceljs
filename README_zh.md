@@ -13,7 +13,7 @@
 ## ----------------------------------------------- ##
 
 
-# DevExtreme ExcelJS
+# Open source community development (OSCD) ExcelJS
 
 [![Build status](https://github.com/exceljs/exceljs/workflows/ExcelJS/badge.svg)](https://github.com/exceljs/exceljs/actions?query=workflow%3AExcelJS)
 [![Code Quality: Javascript](https://img.shields.io/lgtm/grade/javascript/g/exceljs/exceljs.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/exceljs/exceljs/context:javascript)
@@ -26,7 +26,7 @@
 # 安装
 
 ```shell
-npm install devextreme-exceljs-fork
+npm install exceljs
 ```
 
 # 新的功能!

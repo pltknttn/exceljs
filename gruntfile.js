@@ -60,13 +60,13 @@ module.exports = function(grunt) {
       },
       bare: {
         // keep the original source for source maps
-        src: ['./lib/dx-exceljs-fork.bare.js'],
-        dest: './dist/dx-exceljs-fork.bare.js',
+        src: ['./lib/exceljs.bare.js'],
+        dest: './dist/exceljs.bare.js',
       },
       bundle: {
         // keep the original source for source maps
-        src: ['./lib/dx-exceljs-fork.browser.js'],
-        dest: './dist/dx-exceljs-fork.js',
+        src: ['./lib/exceljs.browser.js'],
+        dest: './dist/exceljs.js',
       },
       spec: {
         options: {
@@ -90,11 +90,11 @@ module.exports = function(grunt) {
           // See also https://www.npmjs.com/package/terser#source-map-options
           sourceMap: {
             content: 'inline',
-            url: 'dx-exceljs-fork.min.js.map',
+            url: 'exceljs.min.js.map',
           },
         },
         files: {
-          './dist/dx-exceljs-fork.min.js': ['./dist/dx-exceljs-fork.js'],
+          './dist/exceljs.min.js': ['./dist/exceljs.js'],
         },
       },
       bare: {
@@ -103,11 +103,11 @@ module.exports = function(grunt) {
           // See also https://www.npmjs.com/package/terser#source-map-options
           sourceMap: {
             content: 'inline',
-            url: 'dx-exceljs-fork.bare.min.js.map',
+            url: 'exceljs.bare.min.js.map',
           },
         },
         files: {
-          './dist/dx-exceljs-fork.bare.min.js': ['./dist/dx-exceljs-fork.bare.js'],
+          './dist/exceljs.bare.min.js': ['./dist/exceljs.bare.js'],
         },
       },
     },
@@ -117,8 +117,8 @@ module.exports = function(grunt) {
       bundle: {
         options: {},
         files: {
-          './dist/dx-exceljs-fork.js.map': ['./dist/dx-exceljs-fork.js'],
-          './dist/dx-exceljs-fork.bare.js.map': ['./dist/dx-exceljs-fork.bare.js'],
+          './dist/exceljs.js.map': ['./dist/exceljs.js'],
+          './dist/exceljs.bare.js.map': ['./dist/exceljs.bare.js'],
         },
       },
     },
@@ -127,7 +127,7 @@ module.exports = function(grunt) {
       dist: {
         files: [
           {expand: true, src: ['**'], cwd: './build/lib', dest: './dist/es5'},
-          {src: './build/lib/dx-exceljs-fork.nodejs.js', dest: './dist/es5/index.js'},
+          {src: './build/lib/exceljs.nodejs.js', dest: './dist/es5/index.js'},
           {src: './LICENSE', dest: './dist/LICENSE'},
         ],
       },
@@ -139,7 +139,7 @@ module.exports = function(grunt) {
         noSandbox: true,
       },
       dev: {
-        src: ['./dist/dx-exceljs-fork.js'],
+        src: ['./dist/exceljs.js'],
         options: {
           specs: './build/web/exceljs.spec.js',
         },

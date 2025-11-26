@@ -1,6 +1,6 @@
 const HrStopwatch = require('./utils/hr-stopwatch');
 
-const {Workbook} = require('../lib/dx-exceljs-fork.nodejs');
+const {Workbook} = require('../lib/exceljs.nodejs');
 
 const filenameIn = process.argv[2];
 const filenameOut = process.argv[3];
@@ -22,3 +22,4 @@ wb.xlsx
   .catch(error => {
     console.error('Error', error.stack);
   });
+

@@ -1,4 +1,4 @@
-const Excel = require('../lib/dx-exceljs-fork.nodejs.js');
+const Excel = require('../lib/exceljs.nodejs.js');
 
 const wb = new Excel.Workbook();
 wb.xlsx
@@ -98,3 +98,4 @@ wb.xlsx
     return wb.xlsx.writeFile(`${__dirname}/data/test.xlsx`);
   })
   .catch(console.error);
+

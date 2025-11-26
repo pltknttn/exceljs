@@ -16,7 +16,7 @@ const basePath = (function() {
     libs.exceljs = require('../../dist/es5');
     return '../../dist/es5/';
   }
-  libs.exceljs = require('../../lib/dx-exceljs-fork.nodejs');
+  libs.exceljs = require('../../lib/exceljs.nodejs');
   return '../../lib/';
 })();
 
