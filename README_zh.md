@@ -1,3 +1,18 @@
+# Оригинал: @exceljs/exceljs
+
+# Отслеживание: 
+@mertdeveci55/univer-import-export,
+@protobi/exceljs,
+@DevExpress/devextreme-exceljs-fork
+
+# Цель: актуальный репозиторий.
+
+# Состояние: в разработке, код не проверен.
+ 
+
+## ----------------------------------------------- ##
+
+
 # DevExtreme ExcelJS
 
 [![Build status](https://github.com/exceljs/exceljs/workflows/ExcelJS/badge.svg)](https://github.com/exceljs/exceljs/actions?query=workflow%3AExcelJS)
