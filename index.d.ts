@@ -1779,6 +1779,12 @@ export class Workbook {
 	addImage(img: Image): number;
 
 	getImage(id: number): Image;
+
+	getImages(): Image[];
+
+	addCellImage(data: Image & { descr?: string, ext?: { width: number, height: number } }): { id: number, value: string };
+
+	getCellImages(): Image[];
 }
 
 export interface TableStyleProperties {
