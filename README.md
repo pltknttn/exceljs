@@ -2068,6 +2068,7 @@ It can have one of the following values:
 | --------- | ----------- |
 | undefined | It specifies the image will be moved and sized with cells |
 | oneCell   | This is the default. Image will be moved with cells but not sized |
+| twoCell   | Image will be moved and sized with cells |
 | absolute  | Image will not be moved or sized with cells |
 
 ```javascript

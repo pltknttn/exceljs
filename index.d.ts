@@ -400,6 +400,8 @@ export type CellValue =
 
 	export type CommentEditAs = 'twoCells' | 'oneCells' | 'absolute';
 
+	export type ImageEditAs = 'twoCell' | 'oneCell' | 'absolute';
+
 	export interface Comment {
 		texts?: RichText[];
 		margins?: Partial<CommentMargins>;
@@ -1168,7 +1170,7 @@ export interface Worksheet {
 	 * Cut one or more columns (columns to the right are shifted left)
 	 * and optionally insert more
 	 *
-	 * If column properties have been definde, they will be cut or moved accordingly
+	 * If column properties have been defined, they will be cut or moved accordingly
 	 *
 	 * Known Issue: If a splice causes any merged cells to move, the results may be unpredictable
 	 *
@@ -1338,7 +1340,7 @@ export interface Worksheet {
 	 * Using the image id from `Workbook.addImage`,
 	 * embed an image within the worksheet to cover a range
 	 */
-	addImage(imageId: number, range: string | { editAs?: string; } & ImageRange & { hyperlinks?: ImageHyperlinkValue } | { editAs?: string; } & ImagePosition & { hyperlinks?: ImageHyperlinkValue }): void;
+	addImage(imageId: number, range: string | { editAs?: ImageEditAs; } & ImageRange & { hyperlinks?: ImageHyperlinkValue } | { editAs?: ImageEditAs; } & ImagePosition & { hyperlinks?: ImageHyperlinkValue }): void;
 
 	getImages(): Array<{
 		type: 'image',
