@@ -1,16 +1,20 @@
 # Оригинал: @exceljs/exceljs
 
-# Отслеживание: 
+Отслеживание: 
+
 @mertdeveci55/univer-import-export,
+
 @protobi/exceljs,
+
 @DevExpress/devextreme-exceljs-fork
 
-# Цель: актуальный репозиторий.
 
-# Состояние: в разработке, код не проверен.
+Цель: актуальный репозиторий.
+
+Состояние: в разработке
  
 
-## ----------------------------------------------- ##
+-----------------------------------------------
 
 # Open source community development (OSCD) ExcelJS
 
